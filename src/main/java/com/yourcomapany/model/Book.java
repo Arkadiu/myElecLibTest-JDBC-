@@ -1,4 +1,4 @@
-package com.yourcomapany;
+package com.yourcomapany.model;
 
 /**
  * Created by Alexander on 10.09.2016.
@@ -74,6 +74,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return String.format("║ Книга №%3d║ %20s║ автор: %10s.║ %30s║ ", id, name, author, desc);
+        return String.format("║ Книга №%3d\t║ %20s\t║ автор: %10s\t║ %30s\t║ ", id, name, author, desc);
     }
 }

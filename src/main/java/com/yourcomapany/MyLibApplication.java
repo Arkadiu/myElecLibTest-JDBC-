@@ -1,5 +1,7 @@
 package com.yourcomapany;
 
+import com.yourcomapany.dao.DBWorker;
+
 import static java.sql.Types.NULL;
 
 
@@ -10,12 +12,12 @@ public class MyLibApplication {
         DBWorker dbWorker = new DBWorker();
 
         dbWorker.showAllRow();
-        dbWorker.insertNewBook(5, "Карлсон", "Линдра", "Карлсон который живет на крыше", "C:\\icon.png");
-        dbWorker.insertNewBook(NULL, "Мальчик с пальчик", "Перро", "Немецкая сказка", "C:\\icon.png");
-        dbWorker.deleteBookById(5);
+        dbWorker.addBook(5, "Карлсон", "Линдра", "Карлсон который живет на крыше", "C:\\icon.png");
+        dbWorker.addBook(NULL, "Мальчик с пальчик", "Перро", "Немецкая сказка", "C:\\icon.png");
+        dbWorker.deleteBook(5);
         dbWorker.updateBookDescription(10, "Сказка про мальчика");
         dbWorker.searchBookByNameOrAuthor("Гримм");
-        dbWorker.insertNewBook(NULL, "Русалочка", "Андерсон", "Сказка про подставу", "");
+        dbWorker.addBook(NULL, "Русалочка", "Андерсон", "Сказка про подставу", "");
 
     }
 }

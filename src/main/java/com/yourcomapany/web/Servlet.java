@@ -1,5 +1,7 @@
-import com.yourcomapany.Book;
-import com.yourcomapany.DBWorker;
+package com.yourcomapany.web;
+
+import com.yourcomapany.model.Book;
+import com.yourcomapany.dao.DBWorker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,7 +12,7 @@ import java.util.List;
 /**
  * Created by Alexander on 11.09.2016.
  */
-@javax.servlet.annotation.WebServlet(name = "Servlet", urlPatterns = "/Servlet")
+@javax.servlet.annotation.WebServlet(name = "com.yourcomapany.web.Servlet", urlPatterns = "/com.yourcomapany.web.Servlet")
 public class Servlet extends javax.servlet.http.HttpServlet {
 
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
