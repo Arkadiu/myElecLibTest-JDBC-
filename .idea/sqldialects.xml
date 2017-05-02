@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/main/java/com/yourcomapany/dao/DBWorker.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/company/dao/DBWorker.java" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/initDB.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db/populatedb.sql" dialect="MySQL" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/d6414f2b-67d4-4915-adf6-093c96ff654f/console.sql" dialect="MySQL" />
