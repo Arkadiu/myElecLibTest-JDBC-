@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Alexander on 10.09.2016.
  */
-public class DBWorker {
+public class BookDao {
 
     private Connection connection = null;
     private int countRequest = 0;
@@ -23,10 +23,12 @@ public class DBWorker {
     private static final String GET_ALL = "SELECT * FROM library";
     private static final String GET_BY_ID = "SELECT * FROM library WHERE id=?";
 
+    /*
     private static final String SEARCH_REQUEST_BOOK = "SELECT * FROM library WHERE book_name = ?";
     private static final String SEARCH_REQUEST_AUTHOR = "SELECT * FROM library WHERE author = ?";
+    */
 
-    public DBWorker() {
+    public BookDao() {
         connection = DbUtil.getConnection();
     }
 
