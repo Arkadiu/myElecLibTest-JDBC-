@@ -15,6 +15,7 @@ public class Book {
     }
 
     public Book(int id, String name, String author, String desc, byte[] icon) {
+        this.id = id;
         this.name = name;
         this.author = author;
         this.desc = desc;

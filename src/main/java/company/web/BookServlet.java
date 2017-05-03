@@ -20,8 +20,10 @@ public class BookServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("getAll");
-        request.setAttribute("books", new DBWorker().showAllRow());
+        DBWorker dbWorker = new DBWorker();
+        request.setAttribute("books", dbWorker.getAllBooks());
         getServletContext().getRequestDispatcher("/books.jsp").forward(request, response);
+        System.out.println(new DBWorker().getAllBooks());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

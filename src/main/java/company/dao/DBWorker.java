@@ -17,10 +17,12 @@ public class DBWorker {
     private Connection connection = null;
     private int countRequest = 0;
 
-    private static final String GET_ALL = "SELECT * FROM library";
     private static final String DELETE = "DELETE FROM library WHERE id = ?";
-    private static final String INSERT_NEW = "INSERT INTO library VALUES(?, ?, ?, ?, ?)";
-    private static final String UPDATE_INFO = "UPDATE library SET description = ? WHERE id = ?";
+    private static final String INSERT = "INSERT INTO library VALUES(?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE library SET book_name=?, author=?, description=? WHERE id = ?";
+    private static final String GET_ALL = "SELECT * FROM library";
+    private static final String GET_BY_ID = "SELECT * FROM library WHERE id=?";
+
     private static final String SEARCH_REQUEST_BOOK = "SELECT * FROM library WHERE book_name = ?";
     private static final String SEARCH_REQUEST_AUTHOR = "SELECT * FROM library WHERE author = ?";
 
@@ -32,7 +34,7 @@ public class DBWorker {
         if (icon.equals("") || icon == null)
             icon = "image.jpg";
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_NEW);
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
 
             preparedStatement.setInt(1, id);
             preparedStatement.setString(2, name);
@@ -46,7 +48,21 @@ public class DBWorker {
         } catch (FileNotFoundException e) {
             System.out.println("Изображение не найдено");
         }
-        showAllRow();
+    }
+
+    public void updateBook(Book book) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
+
+            preparedStatement.setString(1, book.getName());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getDesc());
+            preparedStatement.setInt(4, book.getId());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteBook(int id) {
@@ -59,85 +75,46 @@ public class DBWorker {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        showAllRow();
     }
 
-    public void updateBookDescription(int id, String desc) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_INFO);
-
-            preparedStatement.setString(1, desc);
-            preparedStatement.setInt(2, id);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        showAllRow();
-    }
-
-    public List<Book> searchBookByNameOrAuthor(String searchString) {
+    public List<Book> getAllBooks() {
         List<Book> list = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_REQUEST_BOOK);
-
-            preparedStatement.setString(1, searchString);
-            ResultSet res = preparedStatement.executeQuery();
-
-            if (!res.next()) {
-                preparedStatement = connection.prepareStatement(SEARCH_REQUEST_AUTHOR);
-                preparedStatement.setString(1, searchString);
-                res = preparedStatement.executeQuery();
+            Statement preparedStatement = connection.createStatement();
+            ResultSet res = preparedStatement.executeQuery(GET_ALL);
+            while (res.next()) {
+                int id = res.getInt("id");
+                String name = res.getString("book_name");
+                String author = res.getString("author");
+                String description = res.getString("description");
+                byte[] icon = res.getBytes("icon");
+                Book book = new Book(id, name, author, description, icon);
+                list.add(book);
             }
-            list.addAll(printTable(res));
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    public List<Book> showAllRow() {
-        List<Book> list = new ArrayList<>();
+    public Book getBookById(int bookId){
+        Book book = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL);
-
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID);
+            preparedStatement.setInt(1, bookId);
             ResultSet res = preparedStatement.executeQuery();
-            list.addAll(printTable(res));
 
+            if (res.next()){
+                int id = res.getInt("id");
+                String name = res.getString("book_name");
+                String author = res.getString("author");
+                String description = res.getString("description");
+                byte[] icon = res.getBytes("icon");
+                book = new Book(id, name, author, description, icon);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return book;
     }
-
-
-    private List<Book> printTable(ResultSet res) throws SQLException {
-        List<Book> list = new ArrayList<>();
-        System.out.println("Запрос в текущей сессии номер №" + ++countRequest);
-        System.out.println(
-                "╔══════════════════╦═══════════════════════════╦══════════════════════╦════════════════════════════════════╗");
-        while (res.next()) {
-            Book book = new Book();
-            book.setId(res.getInt("id"));
-            book.setName(res.getString("book_name"));
-            book.setAuthor(res.getString("author"));
-            book.setDesc(res.getString("description"));
-            book.setIcon(res.getBytes("icon"));
-            System.out.println(book);
-        }
-        System.out.println(
-                "╚══════════════════╩═══════════════════════════╩══════════════════════╩════════════════════════════════════╝");
-        return list;
-    }
-
-    /*private void openConnection() throws SQLException {
-        if (connection == null) {
-            connection = new DbUtil().getConnection();
-        }
-    }*/
-
-  /*  private void closeConnection() throws SQLException {
-        connection.close();
-    }*/
 }

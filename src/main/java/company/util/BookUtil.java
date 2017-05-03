@@ -11,7 +11,7 @@ import static java.util.Arrays.asList;
  */
 public class BookUtil {
     public static final List<Book> LIST = asList(
-            new Book(1, "Проверка", "Автор", "Просто проверка"),
-            new Book(2, "Проверка", "Автор", "Просто проверка")
+            new Book(1, "Проверка", "Автор1", "Просто проверка1"),
+            new Book(2, "Проверка", "Автор2", "Просто проверка2")
     );
 }
