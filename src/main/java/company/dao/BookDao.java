@@ -1,10 +1,10 @@
 package company.dao;
 
 import company.model.Book;
+import company.repository.BookRepository;
+import company.repository.mock.InMemoryBookRepository;
 import company.util.DbUtil;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,9 @@ import java.util.List;
 public class BookDao {
 
     private Connection connection = null;
-    private int countRequest = 0;
 
     private static final String DELETE = "DELETE FROM library WHERE id = ?";
-    private static final String INSERT = "INSERT INTO library VALUES(?, ?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO library VALUES(?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE library SET book_name=?, author=?, description=? WHERE id = ?";
     private static final String GET_ALL = "SELECT * FROM library";
     private static final String GET_BY_ID = "SELECT * FROM library WHERE id=?";
@@ -28,31 +27,40 @@ public class BookDao {
     private static final String SEARCH_REQUEST_AUTHOR = "SELECT * FROM library WHERE author = ?";
     */
 
+    private BookRepository repository = new InMemoryBookRepository();
+
     public BookDao() {
         connection = DbUtil.getConnection();
     }
 
-    public void addBook(int id, String name, String author, String desc, String icon) {
-        if (icon.equals("") || icon == null)
+    public void addBook(Book bookForMemory) {
+        /*
+        if (book.getIcon() == null || book.getIcon().equals(""))
             icon = "image.jpg";
+            */
+
+        Book book = repository.save(bookForMemory);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, author);
-            preparedStatement.setString(4, desc);
-            preparedStatement.setBlob(5, new FileInputStream(icon));
+            preparedStatement.setInt(1, book.getId());
+            preparedStatement.setString(2, book.getName());
+            preparedStatement.setString(3, book.getAuthor());
+            preparedStatement.setString(4, book.getDesc());
+            //preparedStatement.setBlob(5, new FileInputStream(icon));
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
+        } /*
+        catch (FileNotFoundException e) {
             System.out.println("Изображение не найдено");
         }
+        */
     }
 
-    public void updateBook(Book book) {
+    public void updateBook(Book bookForMemory) {
+        Book book = repository.save(bookForMemory);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE);
 
@@ -68,6 +76,7 @@ public class BookDao {
     }
 
     public void deleteBook(int id) {
+        repository.delete(id);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE);
 

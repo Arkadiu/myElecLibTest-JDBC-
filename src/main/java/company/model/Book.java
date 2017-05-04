@@ -5,16 +5,13 @@ package company.model;
  */
 public class Book {
 
-    private int id;
+    private Integer id;
     private String name;
     private String author;
     private String desc;
     private byte[] icon;
 
-    public Book() {
-    }
-
-    public Book(int id, String name, String author, String desc, byte[] icon) {
+    public Book(Integer id, String name, String author, String desc, byte[] icon) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -28,19 +25,17 @@ public class Book {
     }
 
     public Book(String name, String author, String desc) {
-        this.name = name;
-        this.author = author;
-        this.desc = desc;
+        this(null, name, author, desc);
     }
 
-    public Book(int id, String name, String author, String desc) {
+    public Book(Integer id, String name, String author, String desc) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.desc = desc;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -78,6 +73,10 @@ public class Book {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public boolean isNew(){
+        return id == null;
     }
 
     @Override

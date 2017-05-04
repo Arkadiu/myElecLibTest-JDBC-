@@ -72,8 +72,8 @@ public class BookServlet extends HttpServlet {
                 id.isEmpty() ? null : Integer.valueOf(id),
                 request.getParameter("book_name"),
                 request.getParameter("author"),
-                request .getParameter("description")
-                );
+                request.getParameter("description")
+        );
         bookDao.updateBook(book);
         response.sendRedirect("books");
     }
