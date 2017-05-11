@@ -17,7 +17,7 @@ public class BookDao {
     private Connection connection = null;
 
     private static final String DELETE = "DELETE FROM library WHERE id = ?";
-    private static final String INSERT = "INSERT INTO library VALUES(?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO library(id, book_name, author, description) VALUES(?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE library SET book_name=?, author=?, description=? WHERE id = ?";
     private static final String GET_ALL = "SELECT * FROM library";
     private static final String GET_BY_ID = "SELECT * FROM library WHERE id=?";

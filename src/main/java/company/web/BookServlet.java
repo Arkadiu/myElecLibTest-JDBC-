@@ -4,6 +4,7 @@ import company.dao.BookDao;
 import company.model.Book;
 import org.slf4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -69,13 +70,23 @@ public class BookServlet extends HttpServlet {
         LOG.debug("doPost");
 
         Book book = new Book(
-                id.isEmpty() ? null : Integer.valueOf(id),
+                //id.isEmpty() ? null : Integer.valueOf(id),
                 request.getParameter("book_name"),
                 request.getParameter("author"),
                 request.getParameter("description")
         );
-        bookDao.updateBook(book);
-        response.sendRedirect("books");
+
+        if (id == null || id.isEmpty()){
+            bookDao.addBook(book);
+        }else
+        {
+            book.setId(Integer.parseInt(id));
+            bookDao.updateBook(book);
+        }
+        //response.sendRedirect("books");
+        RequestDispatcher view = request.getRequestDispatcher("/books.jsp");
+        request.setAttribute("books", bookDao.getAllBooks());
+        view.forward(request, response);
     }
 
 
