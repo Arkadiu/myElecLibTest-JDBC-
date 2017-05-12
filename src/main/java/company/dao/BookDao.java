@@ -17,7 +17,7 @@ public class BookDao {
     private Connection connection = null;
 
     private static final String DELETE = "DELETE FROM library WHERE id = ?";
-    private static final String INSERT = "INSERT INTO library(id, book_name, author, description) VALUES(?, ?, ?, ?)";
+    private static final String INSERT = "INSERT INTO library(book_name, author, description) VALUES(?, ?, ?)";
     private static final String UPDATE = "UPDATE library SET book_name=?, author=?, description=? WHERE id = ?";
     private static final String GET_ALL = "SELECT * FROM library";
     private static final String GET_BY_ID = "SELECT * FROM library WHERE id=?";
@@ -43,10 +43,10 @@ public class BookDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT);
 
-            preparedStatement.setInt(1, book.getId());
-            preparedStatement.setString(2, book.getName());
-            preparedStatement.setString(3, book.getAuthor());
-            preparedStatement.setString(4, book.getDesc());
+            //preparedStatement.setInt(1, book.getId());
+            preparedStatement.setString(1, book.getName());
+            preparedStatement.setString(2, book.getAuthor());
+            preparedStatement.setString(3, book.getDesc());
             //preparedStatement.setBlob(5, new FileInputStream(icon));
             preparedStatement.executeUpdate();
 
